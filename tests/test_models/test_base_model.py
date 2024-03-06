@@ -40,13 +40,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(self.BaseModel.__class__.__name__, "type")
         self.assertIsInstance(self.base, self.BaseModel)
 
-    def test_args(self):
-        """
-        Tests the class when unexpected arguments are provided.
-        """
-        with self.assertRaises(TypeError):
-            b = TestBaseModel.BaseModel("Unexpectedarguments")
-
     def test_attrs(self):
         """
         Tests the existence and validity of instance attributes.
@@ -97,8 +90,7 @@ class TestBaseModel(unittest.TestCase):
             self.assertIsNotNone(dct.get(key))
 
         self.assertEqual(dct["id"], self.base.id)
-        created_at = datetime.datetime.fromisoformat(dct["created_at\
-"])
+        created_at = datetime.datetime.fromisoformat(dct["created_at"])
         self.assertEqual(created_at, self.base.created_at)
         updated_at = datetime.datetime.fromisoformat(dct["updated_at"])
         self.assertEqual(updated_at, self.base.updated_at)
@@ -117,3 +109,45 @@ class TestBaseModel(unittest.TestCase):
         dct = self.base.to_dict()
         updated_at = datetime.datetime.fromisoformat(dct["updated_at"])
         self.assertEqual(updated_at, self.base.updated_at)
+
+    def test_kwargs_init(self):
+        """
+        Tests object initialization with the kwargs dictionary.
+        """
+        self.base.name = "BaseModel Instance"
+        self.base.number = 89
+        dct = self.base.to_dict()
+        base2 = TestBaseModel.BaseModel(**dct)
+        self.assertIsInstance(base2, TestBaseModel.BaseModel)
+        self.assertIsInstance(base2.created_at, datetime.datetime)
+        self.assertIsInstance(base2.updated_at, datetime.datetime)
+        self.assertIsNone(base2.__dict__.get("__class__"))
+        dct2 = base2.to_dict()
+        for key in dct.keys():
+            self.assertIsNotNone(dct2.get(key))
+            self.assertEqual(dct[key], dct2[key])
+        self.assertEqual(str(self.base), str(base2))
+
+    def test_args(self):
+        """
+        Tests the class when unexpected arguments are provided.
+        """
+        dct = self.base.to_dict()
+        base2 = TestBaseModel.BaseModel("Unexpectedarguments", **dct)
+        self.assertIsInstance(base2, TestBaseModel.BaseModel)
+        self.assertIsInstance(base2.created_at, datetime.datetime)
+        self.assertIsInstance(base2.updated_at, datetime.datetime)
+        self.assertIsNone(base2.__dict__.get("__class__"))
+        dct2 = base2.to_dict()
+        for key in dct.keys():
+            self.assertIsNotNone(dct2.get(key))
+            self.assertEqual(dct[key], dct2[key])
+        self.assertEqual(str(self.base), str(base2))
+
+    def test_equality(self):
+        """
+        Tests that two instances with identical attributes are not the same.
+        """
+        dct = self.base.to_dict()
+        base2 = TestBaseModel.BaseModel(**dct)
+        self.assertIsNot(self.base, base2)

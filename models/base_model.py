@@ -7,7 +7,7 @@ classes:
                 project
 """
 from datetime import datetime
-from models.__init__ import storage
+from models import storage
 import uuid
 
 

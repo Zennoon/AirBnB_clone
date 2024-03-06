@@ -2,8 +2,8 @@
 """
 __init__ file for the models package
 """
-from models.engine.file_storage import FileStorage
+import models.engine.file_storage as file_storage
 
 
-storage = FileStorage()
+storage = file_storage.FileStorage()
 storage.reload()

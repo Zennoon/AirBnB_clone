@@ -7,6 +7,7 @@ classes:
 """
 import datetime
 import models.base_model
+from models import storage
 import unittest
 
 
@@ -109,6 +110,15 @@ class TestBaseModel(unittest.TestCase):
         dct = self.base.to_dict()
         updated_at = datetime.datetime.fromisoformat(dct["updated_at"])
         self.assertEqual(updated_at, self.base.updated_at)
+
+        self.base.save()
+        storage.reload()
+        objs = storage.all()
+        key = "{}.{}".format(self.base.__class__.__name__, self.base.id)
+        self.assertTrue(key in objs)
+        base2 = objs[key]
+        self.assertIsNot(self.base, base2)
+        self.assertEqual(self.base.to_dict(), base2.to_dict())
 
     def test_kwargs_init(self):
         """

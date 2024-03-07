@@ -52,8 +52,8 @@ class FileStorage:
             with open(FileStorage.__file_path, "rt", encoding="utf-8") as f:
                 from models.base_model import BaseModel
                 FileStorage.__objects = {}
-                stored_dict = json.load(f)
-                for key in stored_dict.keys():
-                    FileStorage.__objects[key] = BaseModel(**(stored_dict[key]))
+                file_dict = json.load(f)
+                for key in file_dict.keys():
+                    FileStorage.__objects[key] = BaseModel(**(file_dict[key]))
         except FileNotFoundError:
             pass

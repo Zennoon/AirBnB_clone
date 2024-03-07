@@ -95,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """
-        Destroys a class instance with a given ID
+        Destroys a class instance with a given ID.
         """
         args = args.split(" ")
         if len(args) < 1:
@@ -115,6 +115,19 @@ class HBNBCommand(cmd.Cmd):
             return
         del objs_dct[key]
         storage.save()
+
+    def do_all(self, args):
+        """
+        Loads and prints the string representation of all instances of a model.
+        """
+        if args and args not in HBNBCommand.class_names.keys():
+            print("** class doesn't exist **")
+            return
+        printed_classes = [args] if args else HBNBCommand.class_names
+        all_objs = storage.all()
+        for key, obj in all_objs.items():
+            if key.split(".")[0] in printed_classes:
+                print(obj)
 
 
 if __name__ == '__main__':

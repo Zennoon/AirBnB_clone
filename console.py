@@ -7,6 +7,7 @@ classes:
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -16,7 +17,10 @@ class HBNBCommand(cmd.Cmd):
     command interpreter.
     """
     prompt = "(hbnb) "
-    class_names = {"BaseModel": BaseModel}
+    class_names = {
+        "BaseModel": BaseModel,
+        "User": User
+    }
 
     def empty_line(self):
         """

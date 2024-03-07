@@ -84,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         if len(args) < 2:
-            print("**instance id missing **")
+            print("** instance id missing **")
             return
         key = "{}.{}".format(args[0], args[1])
         obj = storage.all().get(key)
@@ -105,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         if len(args) < 2:
-            print("**instance id missing **")
+            print("** instance id missing **")
             return
         key = "{}.{}".format(args[0], args[1])
         objs_dct = storage.all()
@@ -130,6 +130,41 @@ class HBNBCommand(cmd.Cmd):
             if key.split(".")[0] in printed_classes:
                 output.append(str(obj))
         print(output)
+
+    def do_update(self, args):
+        """
+        Updates a given attribute of an instance of a given class.
+        """
+        args = args.split(" ")
+        if len(args) < 1 or not args[0]:
+            print("** class name missing **")
+            return
+        if args[0] not in HBNBCommand.class_names:
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+        key = "{}.{}".format(args[0], args[1])
+        objs_dct = storage.all()
+        obj = objs_dct.get(key)
+        if obj is None:
+            print("** no instance found **")
+            return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        if args[2] not in ["id", "created_at", "updated_at"]:
+            # converting the value to the appropriate type
+            args[3] = args[3].strip('"')
+            if obj.__dict__.get(args[2]) is not None:
+                args[3] = type(obj.__dict__.get(args[2]))(args[3])
+            else:
+                args[3] = str(args[3])
+            obj.__dict__[args[2]] = args[3]
+            obj.save()
 
 
 if __name__ == '__main__':

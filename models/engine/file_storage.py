@@ -48,12 +48,18 @@ class FileStorage:
         """
         Deserializes the json file and inserts the instances to __objects.
         """
+        from models.base_model import BaseModel
+        from models.user import User
+        classes = {
+            "BaseModel": BaseModel,
+            "User": User
+        }
         try:
             with open(FileStorage.__file_path, "rt", encoding="utf-8") as f:
-                from models.base_model import BaseModel
                 FileStorage.__objects = {}
                 file_dict = json.load(f)
                 for key in file_dict.keys():
-                    FileStorage.__objects[key] = BaseModel(**(file_dict[key]))
+                    cls = classes[file_dict[key]["__class__"]]
+                    FileStorage.__objects[key] = cls(**(file_dict[key]))
         except FileNotFoundError:
             pass

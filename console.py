@@ -158,7 +158,12 @@ class HBNBCommand(cmd.Cmd):
             return
         if args[2] not in ["id", "created_at", "updated_at"]:
             # converting the value to the appropriate type
-            args[3] = args[3].strip('"')
+            if args[3][0] == '"':
+                i = 4
+                while args[3][-1] != '"':
+                    args[3] += ' ' + args[i]
+                    i += 1
+            args[3] = args[3].strip('"\'')
             if obj.__dict__.get(args[2]) is not None:
                 args[3] = type(obj.__dict__.get(args[2]))(args[3])
             else:

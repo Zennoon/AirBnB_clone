@@ -44,6 +44,12 @@ class HBNBCommand(cmd.Cmd):
         """
         print("Exits the command line interpreter (when ctrl+d is clicked)")
 
+    def emptyline(self):
+        """
+        Handles empty line input (empty line + ENTER)
+        """
+        pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

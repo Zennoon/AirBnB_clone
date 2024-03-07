@@ -62,7 +62,7 @@ class HBNBCommand(cmd.Cmd):
         creates a new instance and prints it's id
         """
         args = args.split(" ")
-        if len(args) < 1:
+        if len(args) < 1 or not args[0]:
             print("** class name missing **")
             return
         if args[0] not in HBNBCommand.class_names.keys():
@@ -77,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
         loads and prints the string representation of an instance
         """
         args = args.split(" ")
-        if len(args) < 1:
+        if len(args) < 1 or not args[0]:
             print("** class name missing **")
             return
         if args[0] not in HBNBCommand.class_names.keys():
@@ -98,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
         Destroys a class instance with a given ID.
         """
         args = args.split(" ")
-        if len(args) < 1:
+        if len(args) < 1 or not args[0]:
             print("** class name missing **")
             return
         if args[0] not in HBNBCommand.class_names.keys():
@@ -123,11 +123,13 @@ class HBNBCommand(cmd.Cmd):
         if args and args not in HBNBCommand.class_names.keys():
             print("** class doesn't exist **")
             return
+        output = []
         printed_classes = [args] if args else HBNBCommand.class_names
         all_objs = storage.all()
         for key, obj in all_objs.items():
             if key.split(".")[0] in printed_classes:
-                print(obj)
+                output.append(str(obj))
+        print(output)
 
 
 if __name__ == '__main__':

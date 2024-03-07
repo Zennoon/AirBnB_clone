@@ -6,13 +6,17 @@ classes:
     HBNBCommand - Implements the command interpreter for the project
 """
 import cmd
+from models.base_model import BaseModel
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """
-    Inherits from the Cmd class and implements the specific command interpreter.
+    Inherits from the Cmd class and implements the specific
+    command interpreter.
     """
     prompt = "(hbnb) "
+    class_names = {"BaseModel": BaseModel}
 
     def empty_line(self):
         """
@@ -49,6 +53,45 @@ class HBNBCommand(cmd.Cmd):
         Handles empty line input (empty line + ENTER)
         """
         pass
+
+    """
+    Action methods
+    """
+    def do_create(self, args):
+        """
+        creates a new instance and prints it's id
+        """
+        args = args.split(" ")
+        if len(args) < 1:
+            print("** class name missing **")
+            return
+        if args[0] not in HBNBCommand.class_names.keys():
+            print("** class doesn't exist **")
+            return
+        obj = HBNBCommand.class_names[args[0]]()
+        obj.save()
+        print(obj.id)
+
+    def do_show(self, args):
+        """
+        loads and prints the string representation of an instance
+        """
+        args = args.split(" ")
+        if len(args) < 1:
+            print("** class name missing **")
+            return
+        if args[0] not in HBNBCommand.class_names.keys():
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("**instance id missing **")
+            return
+        key = "{}.{}".format(args[0], args[1])
+        obj = storage.all().get(key)
+        if obj is None:
+            print("** no instance found **")
+            return
+        print(obj)
 
 
 if __name__ == '__main__':

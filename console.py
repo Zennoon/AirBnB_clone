@@ -198,10 +198,16 @@ class HBNBCommand(cmd.Cmd):
                 }
 
         args_split = re.split(r"[ .(),]", args)
+        print(args_split)
         if len(args) > 1:
             for key in actions.keys():
                 if key == args_split[1]:
-                    return actions[args_split[1]](args_split[0])
+                    if args_split[2] != "":
+                        cleaned_args = args_split[2].replace('"', '')
+                        params = f"{args_split[0]} {cleaned_args}"
+                        return actions[args_split[1]](params)
+                    else:
+                        return actions[args_split[1]](args_split[0])
 
         print("** Unknown syntax: {}".format(args))
         return False

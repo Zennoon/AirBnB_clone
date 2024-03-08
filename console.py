@@ -204,7 +204,7 @@ class HBNBCommand(cmd.Cmd):
         """
         actions = {
                 "all": self.do_all,
-                "destroy": self.do_show,
+                "destroy": self.do_destroy,
                 "update": self.do_update,
                 "show": self.do_show,
                 "count": self.do_count
@@ -215,9 +215,15 @@ class HBNBCommand(cmd.Cmd):
         if len(args) > 1:
             for key in actions.keys():
                 if key == args_split[1]:
-                    if args_split[2] != "":
+                    if args_split[2] != "" and len(args_split) < 6:
                         cleaned_args = args_split[2].replace('"', '')
                         params = f"{args_split[0]} {cleaned_args}"
+                        return actions[args_split[1]](params)
+                    elif len(args_split) > 6:
+                        param1 = args_split[2].replace('"', '')
+                        param2 = args_split[4].replace('"', '')
+                        param3 = args_split[6].replace('"', '')
+                        params = f"{args_split[0]} {param1} {param2} {param3}"
                         return actions[args_split[1]](params)
                     else:
                         return actions[args_split[1]](args_split[0])

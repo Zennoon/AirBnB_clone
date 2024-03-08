@@ -48,11 +48,15 @@ class FileStorage:
         """
         Deserializes the json file and inserts the instances to __objects.
         """
-        from models.base_model import BaseModel
-        from models.user import User
+        from models import base_model, user, state, city, amenity, place, review
         classes = {
-            "BaseModel": BaseModel,
-            "User": User
+            "BaseModel": base_model.BaseModel,
+            "User": user.User,
+            "State": state.State,
+            "City": city.City,
+            "Amenity": amenity.Amenity,
+            "Place": place.Place,
+            "Review": review.Review
         }
         try:
             with open(FileStorage.__file_path, "rt", encoding="utf-8") as f:

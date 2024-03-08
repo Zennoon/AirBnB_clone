@@ -186,6 +186,18 @@ class HBNBCommand(cmd.Cmd):
             obj.__dict__[args[2]] = args[3]
             obj.save()
 
+    def do_count(self, args):
+        """
+        counts the number of instance of a particular class
+        """
+        args = args.split(" ")
+        count = 0
+        all_keys = storage.all().keys()
+        for key in all_keys:
+            if args[0] in key:
+                count += 1
+        print(count)
+
     def default(self, args):
         """
         Default method
@@ -195,6 +207,7 @@ class HBNBCommand(cmd.Cmd):
                 "destroy": self.do_show,
                 "update": self.do_update,
                 "show": self.do_show,
+                "count": self.do_count
                 }
 
         args_split = re.split(r"[ .(),]", args)

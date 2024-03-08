@@ -44,7 +44,7 @@ class TestState(unittest.TestCase):
 
     def test_attrs(self):
         """
-        Tests that the attributes that are defined inside the State class exist.
+        Tests that attributes that are defined inside the State class exist.
         """
         self.assertTrue(hasattr(self.State, "name"))
         self.assertIsInstance(self.State.name, str)
@@ -62,7 +62,7 @@ class TestState(unittest.TestCase):
 
     def test_super_init(self):
         """
-        Tests that the attributes from the __init__ of BaseModel are in a State
+        Tests that attributes from the __init__ of BaseModel are in a State
         instance.
         """
         self.assertTrue(hasattr(self.state, "id"))

@@ -21,30 +21,30 @@ class TestFileStorage(unittest.TestCase):
         """
         self.storage = FileStorage()
 
-    #def test_private_attrs(self):
-     #   """
-      #  Tests that the private attributes can't be accessed with their names.
-       # """
-        #with self.assertRaises(AttributeError):
-         #   objects = self.storage.__objects
+    def test_private_attrs(self):
+        """
+        Tests that the private attributes can't be accessed with their names.
+        """
+        with self.assertRaises(AttributeError):
+            objects = self.storage.__objects
 
-        #with self.assertRaises(AttributeError):
-         #   file_path = self.storage.__file_path
+        with self.assertRaises(AttributeError):
+            file_path = self.storage.__file_path
 
-#    def test_all(self):
- #       """
-  #      Tests the all method of FileStorage instances.
-   #     """
-    #    all_objs = self.storage.all()
-     #   self.assertIsInstance(all_objs, dict)
-      #  base = BaseModel()
-       # base.name = "Base model"
-        #base.number = 98
-        #all_objs = self.storage.all()
-        #self.assertNotEqual(all_objs, {})
-        #key = "{}.{}".format(base.__class__.__name__, base.id)
-        #self.assertTrue(key in all_objs)
-        #self.assertEqual(base.to_dict(), all_objs[key].to_dict())
+    def test_all(self):
+        """
+        Tests the all method of FileStorage instances.
+        """
+        all_objs = self.storage.all()
+        self.assertIsInstance(all_objs, dict)
+        base = BaseModel()
+        base.name = "Base model"
+        base.number = 98
+        all_objs = self.storage.all()
+        self.assertNotEqual(all_objs, {})
+        key = "{}.{}".format(base.__class__.__name__, base.id)
+        self.assertTrue(key in all_objs)
+        self.assertEqual(base.to_dict(), all_objs[key].to_dict())
 
     def test_new(self):
         """

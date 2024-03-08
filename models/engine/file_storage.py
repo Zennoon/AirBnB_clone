@@ -48,7 +48,9 @@ class FileStorage:
         """
         Deserializes the json file and inserts the instances to __objects.
         """
-        from models import base_model, user, state, city, amenity, place, review
+        from models import base_model, user, state
+        from models import city, amenity, place, review
+
         classes = {
             "BaseModel": base_model.BaseModel,
             "User": user.User,

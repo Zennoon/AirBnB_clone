@@ -77,7 +77,7 @@ class TestReview(unittest.TestCase):
 
     def test_super_init(self):
         """
-        Tests that the attributes from the __init__ of BaseModel are in a Review
+        Tests that attributes from the __init__ of BaseModel are in a Review
         instance.
         """
         self.assertTrue(hasattr(self.review, "id"))
@@ -98,8 +98,8 @@ class TestReview(unittest.TestCase):
         """
         Tests the __str__ method of Review instances.
         """
-        output = "[Review] ({}) {}".format(self.review.id, self.review.__dict__)
-        self.assertEqual(str(self.review), output)
+        corr = "[Review] ({}) {}".format(self.review.id, self.review.__dict__)
+        self.assertEqual(str(self.review), corr)
 
     def test_save(self):
         """

@@ -63,7 +63,7 @@ class TestAmenity(unittest.TestCase):
 
     def test_super_init(self):
         """
-        Tests that the attributes from the __init__ of BaseModel are in a Amenity
+        Tests that attributes from the __init__ of BaseModel are in a Amenity
         instance.
         """
         self.assertTrue(hasattr(self.amenity, "id"))

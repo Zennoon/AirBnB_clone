@@ -47,7 +47,7 @@ class TestPlace(unittest.TestCase):
 
     def test_attrs(self):
         """
-        Tests that the attributes that are defined inside the Place class exist.
+        Tests that attributes that are defined inside the Place class exist.
         """
         self.assertTrue(hasattr(self.Place, "city_id"))
         self.assertIsInstance(self.Place.city_id, str)
@@ -103,7 +103,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.place.max_guest, 6)
         self.assertEqual(self.place.price_by_night, 1000)
         self.assertEqual(self.place.latitude, 65.2345)
-        self.assertEqual(self.place.longitude,87.1264)
+        self.assertEqual(self.place.longitude, 87.1264)
         self.assertEqual(self.place.amenity_ids[0], dct[amenity1_key].id)
         self.assertEqual(self.place.amenity_ids[1], dct[amenity2_key].id)
 
@@ -116,7 +116,7 @@ class TestPlace(unittest.TestCase):
 
     def test_super_init(self):
         """
-        Tests that the attributes from the __init__ of BaseModel are in a Place
+        Tests that attributes from the __init__ of BaseModel are in a Place
         instance.
         """
         self.assertTrue(hasattr(self.place, "id"))

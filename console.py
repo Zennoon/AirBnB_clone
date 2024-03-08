@@ -6,6 +6,7 @@ classes:
     HBNBCommand - Implements the command interpreter for the project
 """
 import cmd
+import re
 from models import storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -184,6 +185,26 @@ class HBNBCommand(cmd.Cmd):
                 args[3] = str(args[3])
             obj.__dict__[args[2]] = args[3]
             obj.save()
+
+    def default(self, args):
+        """
+        Default method
+        """
+        actions = {
+                "all": self.do_all,
+                "destroy": self.do_show,
+                "update": self.do_update,
+                "show": self.do_show,
+                }
+
+        args_split = re.split(r"[ .(),]", args)
+        if len(args) > 1:
+            for key in actions.keys():
+                if key == args_split[1]:
+                    return actions[args_split[1]](args_split[0])
+
+        print("** Unknown syntax: {}".format(args))
+        return False
 
 
 if __name__ == '__main__':

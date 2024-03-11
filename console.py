@@ -6,6 +6,7 @@ classes:
     HBNBCommand - Implements the command interpreter for the project
 """
 import cmd
+import json
 import re
 from models import storage
 from models.amenity import Amenity
@@ -98,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in HBNBCommand.class_names.keys():
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(args) < 2 or not args[1]:
             print("** instance id missing **")
             return
         key = "{}.{}".format(args[0], args[1])
@@ -119,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in HBNBCommand.class_names.keys():
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(args) < 2 or not args[1]:
             print("** instance id missing **")
             return
         key = "{}.{}".format(args[0], args[1])
@@ -135,6 +136,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Loads and prints the string representation of all instances of a model.
         """
+        args = args.strip()
         if args and args not in HBNBCommand.class_names.keys():
             print("** class doesn't exist **")
             return
@@ -157,7 +159,7 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in HBNBCommand.class_names:
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(args) < 2 or not args[1]:
             print("** instance id missing **")
             return
         key = "{}.{}".format(args[0], args[1])
@@ -211,25 +213,34 @@ class HBNBCommand(cmd.Cmd):
                 "count": self.do_count
                 }
 
-        args_split = re.split(r"[ .(),]", args)
-        print(args_split)
-        if len(args) > 1:
-            for key in actions.keys():
-                if key == args_split[1]:
-                    if args_split[2] != "" and len(args_split) < 6:
-                        cleaned_args = args_split[2].replace('"', '')
-                        params = f"{args_split[0]} {cleaned_args}"
-                        return actions[args_split[1]](params)
-                    elif len(args_split) > 6:
-                        param1 = args_split[2].replace('"', '')
-                        param2 = args_split[4].replace('"', '')
-                        param3 = args_split[6].replace('"', '')
-                        params = f"{args_split[0]} {param1} {param2} {param3}"
-                        return actions[args_split[1]](params)
-                    else:
-                        return actions[args_split[1]](args_split[0])
-
-        print("** Unknown syntax: {}".format(args))
+        class_name, command = args.split(".")
+        if command.split("(")[0] in actions:
+            args_split = re.split(r"[()]", command)
+            cleaned_args = []
+            for idx in range(len(args_split)):
+                if args_split[idx]:
+                    cleaned_args.append(args_split[idx].replace('"', ''))
+            action = cleaned_args[0]
+            params = ""
+            if len(cleaned_args) > 1:
+                params = cleaned_args[1]
+            params = re.split(r", ", params)
+            if action != "update" or len(params) < 2 or params[1][0] != '{':
+                actions[action](class_name + " " + " ".join(params))
+            else:
+                id = params[0]
+                i = 2
+                while i < len(params) and params[1][-1] != '}':
+                    params[1] += ", " + params[i]
+                    i += 1
+                attr_val_pairs = re.split(r", ", params[1])
+                for pair in attr_val_pairs:
+                    pair = pair.strip("{}")
+                    pair = pair.split(":")
+                    arg = id + " " + pair[0].strip() + " " + pair[1].strip()
+                    actions[action](class_name + " " + arg)
+        else:
+            super().default(args)
         return False
 
 

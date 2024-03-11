@@ -31,6 +31,17 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(AttributeError):
             file_path = self.storage.__file_path
 
+        with self.assertRaises(AttributeError):
+            objects = FileStorage.__objects
+
+        with self.assertRaises(AttributeError):
+            file_path = FileStorage.__file_path
+
+        objects = FileStorage._FileStorage__objects
+        file_path = FileStorage._FileStorage__file_path
+        self.assertIsInstance(objects, dict)
+        self.assertIsInstance(file_path, str)
+
     def test_all(self):
         """
         Tests the all method of FileStorage instances.

@@ -159,6 +159,7 @@ class HBNBCommand(cmd.Cmd):
             return
         if len(args) < 2:
             print("** instance id missing **")
+            return
         key = "{}.{}".format(args[0], args[1])
         objs_dct = storage.all()
         obj = objs_dct.get(key)

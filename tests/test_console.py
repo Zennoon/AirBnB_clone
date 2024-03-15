@@ -107,6 +107,33 @@ class TestHBNBCommand(unittest.TestCase):
         self.assertEqual(output.getvalue(), w_space.format(text))
         output.close()
 
+    def test_quit(self):
+        """
+        Tests the quit command of the HBNBCommand class.
+        """
+        output = io.StringIO()
+        sys.stdout = output
+        val = self.cmd.onecmd("quit")
+        self.assertEqual(output.getvalue(), '')
+
+    def test_EOF(self):
+        """
+        Tests the EOF (ctrl d) command of the HBNBCommand class.
+        """
+        output = io.StringIO()
+        sys.stdout = output
+        val = self.cmd.onecmd("EOF")
+        self.assertEqual(output.getvalue(), '')
+
+    def test_empty_line(self):
+        """
+        Tests the console (HBNBCommand) when an empty line is given as input.
+        """
+        output = io.StringIO()
+        sys.stdout = output
+        val = self.cmd.onecmd("")
+        self.assertEqual(output.getvalue(), '')
+
     def test_create(self):
         """
         Tests the create command of the HBNBCommand.
@@ -213,6 +240,45 @@ class TestHBNBCommand(unittest.TestCase):
         self.cmd.onecmd("show Review {}".format(self.review.id))
         self.assertEqual(output.getvalue(), str(self.review) + '\n')
 
+    def test_show_dot(self):
+        """
+        Tests the show command with the dot notation (Classname.show(id)).
+        """
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("BaseModel.show({})".format(self.base.id))
+        self.assertEqual(output.getvalue(), str(self.base) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("User.show({})".format(self.user.id))
+        self.assertEqual(output.getvalue(), str(self.user) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("State.show({})".format(self.state.id))
+        self.assertEqual(output.getvalue(), str(self.state) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("City.show({})".format(self.city.id))
+        self.assertEqual(output.getvalue(), str(self.city) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Amenity.show({})".format(self.amenity.id))
+        self.assertEqual(output.getvalue(), str(self.amenity) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Place.show({})".format(self.place.id))
+        self.assertEqual(output.getvalue(), str(self.place) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Review.show({})".format(self.review.id))
+        self.assertEqual(output.getvalue(), str(self.review) + '\n')
+
     def test_show_invalid_args(self):
         """
         Tests the show command of the HBNBCommand class with invalid args.
@@ -229,12 +295,27 @@ class TestHBNBCommand(unittest.TestCase):
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("Random.show()")
+        self.assertEqual(output.getvalue(), "** class doesn't exist **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("show BaseModel")
         self.assertEqual(output.getvalue(), "** instance id missing **\n")
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("BaseModel.show()")
+        self.assertEqual(output.getvalue(), "** instance id missing **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("show User 1234-4321-1234-4321")
+        self.assertEqual(output.getvalue(), "** no instance found **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("User.show(1234-4321-1234-4321)")
         self.assertEqual(output.getvalue(), "** no instance found **\n")
 
     def test_destroy(self):
@@ -276,6 +357,45 @@ class TestHBNBCommand(unittest.TestCase):
         self.cmd.onecmd("destroy Review {}".format(self.review.id))
         self.assertFalse(key in storage.all())
 
+    def test_destroy_dot(self):
+        """
+        Tests teh destroy command with the dot notation (Classname.destroy(id)).
+        """
+        key = "BaseModel.{}".format(self.base.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("BaseModel.destroy({})".format(self.base.id))
+        self.assertFalse(key in storage.all())
+
+        key = "User.{}".format(self.user.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("User.destroy({})".format(self.user.id))
+        self.assertFalse(key in storage.all())
+
+        key = "State.{}".format(self.state.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("State.destroy({})".format(self.state.id))
+        self.assertFalse(key in storage.all())
+
+        key = "City.{}".format(self.city.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("City.destroy({})".format(self.city.id))
+        self.assertFalse(key in storage.all())
+
+        key = "Amenity.{}".format(self.amenity.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("Amenity.destroy({})".format(self.amenity.id))
+        self.assertFalse(key in storage.all())
+
+        key = "Place.{}".format(self.place.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("Place.destroy({})".format(self.place.id))
+        self.assertFalse(key in storage.all())
+
+        key = "Review.{}".format(self.review.id)
+        self.assertTrue(key in storage.all())
+        self.cmd.onecmd("Review.destroy({})".format(self.review.id))
+        self.assertFalse(key in storage.all())
+
     def test_destroy_invalid_args(self):
         """
         Tests the destroy command of the HBNBCommand class with invalid args.
@@ -292,12 +412,27 @@ class TestHBNBCommand(unittest.TestCase):
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("Random.destroy()")
+        self.assertEqual(output.getvalue(), "** class doesn't exist **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("destroy BaseModel")
         self.assertEqual(output.getvalue(), "** instance id missing **\n")
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("BaseModel.destroy()")
+        self.assertEqual(output.getvalue(), "** instance id missing **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("destroy User 1234-4321-1234-4321")
+        self.assertEqual(output.getvalue(), "** no instance found **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("User.destroy(1234-4321-1234-4321)")
         self.assertEqual(output.getvalue(), "** no instance found **\n")
 
     def test_all(self):
@@ -354,6 +489,54 @@ class TestHBNBCommand(unittest.TestCase):
         objs_lst = [str(obj) for obj in objs if type(obj) is Review]
         self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
 
+    def test_all_dot(self):
+        """
+        Tests the all command with the dot notation (Classname.all()).
+        """
+        objs = storage.all().values()
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("BaseModel.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is BaseModel]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("User.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is User]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("State.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is State]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("City.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is City]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Amenity.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is Amenity]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Place.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is Place]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Review.all()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is Review]
+        self.assertEqual(output.getvalue(), str(objs_lst) + '\n')
+
     def test_all_invalid_args(self):
         """
         Tests the all command of the HBNBCommand class woth invalid args.
@@ -361,6 +544,11 @@ class TestHBNBCommand(unittest.TestCase):
         output = io.StringIO()
         sys.stdout = output
         self.cmd.onecmd("all Random")
+        self.assertEqual(output.getvalue(), "** class doesn't exist **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Random.all()")
         self.assertEqual(output.getvalue(), "** class doesn't exist **\n")
 
     def test_update(self):
@@ -391,6 +579,69 @@ class TestHBNBCommand(unittest.TestCase):
         self.cmd.onecmd(command.format(self.review.id, self.user.id))
         self.assertEqual(self.review.user_id, self.user.id)
 
+    def test_update_dot(self):
+        """
+        Tests the update command with the dot notation (Classname.update(...)).
+        """
+        self.cmd.onecmd("BaseModel.update({}, name, base)".format(self.base.id))
+        self.assertEqual(self.base.name, "base")
+
+        self.cmd.onecmd("User.update({}, password, pwd)".format(self.user.id))
+        self.assertEqual(self.user.password, "pwd")
+
+        self.cmd.onecmd("State.update({}, name, Arizona)".format(self.state.id))
+        self.assertEqual(self.state.name, "Arizona")
+
+        command = "City.update({}, state_id, {})"
+        self.cmd.onecmd(command.format(self.city.id, self.state.id))
+        self.assertEqual(self.city.state_id, self.state.id)
+
+        self.cmd.onecmd("Amenity.update({}, name, Pad)".format(self.amenity.id))
+        self.assertEqual(self.amenity.name, "Pad")
+
+        command = "Place.update({}, city_id, {})"
+        self.cmd.onecmd(command.format(self.place.id, self.city.id))
+        self.assertEqual(self.place.city_id, self.city.id)
+
+        command = "Review.update({}, user_id, {})"
+        self.cmd.onecmd(command.format(self.review.id, self.user.id))
+        self.assertEqual(self.review.user_id, self.user.id)
+
+    def test_update_dict(self):
+        """
+        Tests the update command with a dictionary arg which is
+
+             Classname.update(id, {attr1_name: val1, attr2_name: val2, ...}))
+
+        """
+        command = "BaseModel.update({}, {{name: base, area: London}})"
+        self.cmd.onecmd(command.format(self.base.id))
+        self.assertEqual(self.base.name, "base")
+        self.assertEqual(self.base.area, "London")
+
+        command = "User.update({}, {{password: pwd}})"
+        self.cmd.onecmd(command.format(self.user.id))
+        self.assertEqual(self.user.password, "pwd")
+
+        self.cmd.onecmd("State.update({}, {{name: Az)}}".format(self.state.id))
+        self.assertEqual(self.state.name, "Az")
+
+        command = "City.update({}, {{state_id: {}}})"
+        self.cmd.onecmd(command.format(self.city.id, self.state.id))
+        self.assertEqual(self.city.state_id, self.state.id)
+
+        command = "Amenity.update({}, {{name: Padio}})"
+        self.cmd.onecmd(command.format(self.amenity.id))
+        self.assertEqual(self.amenity.name, "Padio")
+
+        command = "Place.update({}, {{city_id: {}}})"
+        self.cmd.onecmd(command.format(self.place.id, self.city.id))
+        self.assertEqual(self.place.city_id, self.city.id)
+
+        command = "Review.update({}, {{user_id: {}}})"
+        self.cmd.onecmd(command.format(self.review.id, self.user.id))
+        self.assertEqual(self.review.user_id, self.user.id)
+
     def test_update_invalid_args(self):
         """
         Tests the update command of the HBNBCommand class with invalid args.
@@ -407,7 +658,17 @@ class TestHBNBCommand(unittest.TestCase):
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("Random.update()")
+        self.assertEqual(output.getvalue(), "** class doesn't exist **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("update BaseModel")
+        self.assertEqual(output.getvalue(), "** instance id missing **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("BaseModel.update()")
         self.assertEqual(output.getvalue(), "** instance id missing **\n")
 
         output = io.StringIO()
@@ -417,12 +678,27 @@ class TestHBNBCommand(unittest.TestCase):
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("User.update(1234-4321-1234-4321)")
+        self.assertEqual(output.getvalue(), "** no instance found **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("update User {}".format(self.user.id))
         self.assertEqual(output.getvalue(), "** attribute name missing **\n")
 
         output = io.StringIO()
         sys.stdout = output
+        self.cmd.onecmd("User.update({})".format(self.user.id))
+        self.assertEqual(output.getvalue(), "** attribute name missing **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
         self.cmd.onecmd("update User {} first_name".format(self.user.id))
+        self.assertEqual(output.getvalue(), "** value missing **\n")
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("User.update({}, first_name)".format(self.user.id))
         self.assertEqual(output.getvalue(), "** value missing **\n")
 
     def test_count(self):
@@ -470,6 +746,54 @@ class TestHBNBCommand(unittest.TestCase):
         output = io.StringIO()
         sys.stdout = output
         self.cmd.onecmd("count Review")
+        objs_lst = [str(obj) for obj in objs if type(obj) is Review]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+    def test_count_dot(self):
+        """
+        Tests the count command with the dot notation (Classname.count()).
+        """
+        objs = storage.all().values()
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("BaseModel.count()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is BaseModel]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("User.count()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is User]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("State.count()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is State]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("City.count()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is City]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Amenity.count()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is Amenity]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Place.count()")
+        objs_lst = [str(obj) for obj in objs if type(obj) is Place]
+        self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
+
+        output = io.StringIO()
+        sys.stdout = output
+        self.cmd.onecmd("Review.count()")
         objs_lst = [str(obj) for obj in objs if type(obj) is Review]
         self.assertEqual(output.getvalue(), str(len(objs_lst)) + '\n')
 

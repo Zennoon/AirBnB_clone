@@ -18,6 +18,7 @@ section.filters {
 .filters .filter {
     height: 100%;
     width: 25%;
+    z-index: 1;
 }
 
 .filter-text-container {

@@ -1,0 +1,104 @@
+/*
+  ========================================
+  Filters (search) styles
+  ========================================
+*/
+
+section.filters {
+    background-color: #FFF;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.filters .filter {
+    height: 100%;
+    width: 25%;
+}
+
+.filter-text-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filter h3 {
+    font-weight: 600;
+}
+
+.filter h4 {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.filters .filter:first-child {
+    border-right: 1px solid #DDD;
+}
+
+/*
+  ========================================
+  Dropdown menus of the filters
+  ========================================
+*/
+
+.popover {
+    display: none;
+    width: 100%;
+    background-color: #FAFAFA;
+    border: 1px solid #DDD;
+    padding-top: 30px;
+    list-style-type: none;
+}
+
+.popover h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.popover h2 {
+    margin-left: 25px;
+}
+
+.popover .filter-item {
+    margin-left: 50px;
+}
+
+.filter-item:last-child {
+    margin-bottom: 30px;
+}
+
+.filter:hover .popover {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*
+  ========================================
+  Filter/Search button of the filters section
+  ========================================
+*/
+
+.filters button {
+    background-color: #FF5A5F;
+    color: #FFF;
+    font-size: 18px;
+    height: 48px;
+    width: 20%;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.filters button:hover {
+    opacity: 90%;
+}

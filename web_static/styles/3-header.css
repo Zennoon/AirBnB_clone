@@ -1,0 +1,19 @@
+/*
+  ========================================
+  Header
+  ========================================
+*/
+
+header {
+    background-color: #FFF;
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.main-logo {
+    margin-left: 20px;
+}

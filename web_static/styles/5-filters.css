@@ -18,6 +18,10 @@ section.filters {
 .filters .filter {
     height: 100%;
     width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .filter h3 {

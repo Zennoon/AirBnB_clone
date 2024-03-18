@@ -5,16 +5,13 @@
 */
 
 header {
-    background: #FFF url("../images/AirBnb_clone_logo.png");
-    background-repeat: no-repeat;
     height: 70px;
     width: 100%;
     border-bottom: 1px solid #CCC;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
 
-.main-logo {
+.logo-container {
+    background: #FFF url("../images/AirBnb_clone_logo.png");
+    background-repeat: no-repeat;
     margin-left: 20px;
 }

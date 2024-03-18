@@ -51,8 +51,9 @@ section.filters {
     display: none;
     width: 100%;
     background-color: #FAFAFA;
-    border: 1px solid #DDD;
     padding-top: 30px;
+    border: 1px solid #DDD;
+    border-radius: 4px;
     list-style-type: none;
 }
 

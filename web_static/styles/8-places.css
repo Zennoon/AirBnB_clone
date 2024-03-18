@@ -55,13 +55,13 @@ article.place h2 {
     align-items: center;
     float: right;
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 20px;
+    right: 20px;
 }
 
 .information {
     height: 80px;
-    margin-top: 45px;
+    margin-top: 55px;
     margin-bottom: 10px;
     border-top: 1px solid #DDD;
     border-bottom: 1px solid #DDD;
